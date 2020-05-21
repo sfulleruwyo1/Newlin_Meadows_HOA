@@ -372,58 +372,6 @@
 
 
       /**
-       * Function to populate modal with feature attributes
-       *  
-       * @param {array} array - array of attributes
-       * @param {int} arrayId - array index number
-       * 
-       * @return {void}
-       **/
-
-      // function populateModal(array, arrayId) {
-      //   $("#form").remove();
-      //   if (map.hasLayer(marker)) {
-      //     map.removeLayer(marker);
-      //   }
-      //   $("#label").html(array.length + ' Features Selected')
-      //   $("#attributeModal").modal('show');
-      //   let prop = array[arrayId].properties;
-      //   content = '';
-      //   //content += `<div><button class = 'btn btn-primary'></button></div>`;
-      //   content += `<form id = 'form' class="p-2">`
-      //   for (i = 0; i < Object.keys(prop).length; i++) {
-      //     let propKeys = Object.keys(prop)
-      //     let propValues = Object.values(prop)
-
-      //     if (propKeys[i] == 'objectid') {
-      //       content +=
-      //         `<label for="${propKeys[i]}"><b>${propKeys[i].toUpperCase().replace(/_/g, ' ')}:</b></label><input type="text" id="${propKeys[i]}" class="form-control" value ="${propValues[i] || ''}" readonly>`
-      //     } else if (propKeys[i] == 'created_user' || propKeys[i] == 'created_date' || propKeys[i] ==
-      //       'last_edited_user' || propKeys[i] == 'last_edited_date') {
-
-      //     } else if (propKeys[i] == 'layer_name') {
-      //       $("#featureType").html(propValues[i]);
-      //     } else {
-      //       content +=
-      //         `<label for="${propKeys[i]}" style = 'padding-top: 10px;'><b>${propKeys[i].toUpperCase().replace(/_/g, ' ')}:</b></label><input type="text" id="${propKeys[i]}" class="form-control" value ="${propValues[i] || ''}">`
-      //     }
-      //   }
-
-
-      //   content += `</form>`
-      //   $(".modal-text").append(content);
-
-
-      //   let buffer = turf.buffer(array[arrayId], 20, {
-      //     units: 'feet'
-      //   });
-      //   marker = L.geoJson(buffer).addTo(map);
-
-      //   map.flyToBounds(marker.getBounds());
-      // }
-
-
-      /**
        * Helper function to look for empty or null objects
        *  
        * @param {object} strIn - object or array of data
@@ -465,29 +413,30 @@
             let trimColor = '';
             let popup = `<div class="row"><div><b>ADDRESS: </b>${address}</div></div>`;
             if (prop.COMMENTS != null) {
-              popup +=
-                `<div class="row pt-3 comments text-center"><h4><b>${prop.COMMENTS}</b></h4></div>`;
-            }
-            if (prop.PAINT != null) {
-              mainColor = prop.PAINT;
-              popup +=
-                `<div class="row pt-3"><b>MAIN COLOR:</b><div class='box' style = 'background-color:#${mainHex}'></div><span> ${mainColor}</span></div>`;
-            }
-            if (prop.PAINT2 != null) {
-              let secondColor = prop.PAINT2;
-              popup +=
-                `<div class="row pt-3"><b>SECOND BODY COLOR:</b><div class='box' style = 'background-color:#${secondHex}'></div><span> ${secondColor}</span></div>`;
-            }
-            if (prop.TRIM != null) {
-              trimColor = trim;
-              popup +=
-                `<div class="row pt-3"><b>TRIM COLOR:</b><div class='box' style = 'background-color:#${trimHex}'></div><span> ${trim}</span></div>`;
+
+            } else {
+              if (prop.PAINT != null) {
+                mainColor = prop.PAINT;
+                popup +=
+                  `<div class="row pt-3"><b>MAIN COLOR:</b><div class='box' style = 'background-color:#${mainHex}'></div><span> ${mainColor}</span></div>`;
+              }
+              if (prop.PAINT2 != null) {
+                let secondColor = prop.PAINT2;
+                popup +=
+                  `<div class="row pt-3"><b>SECOND BODY COLOR:</b><div class='box' style = 'background-color:#${secondHex}'></div><span> ${secondColor}</span></div>`;
+              }
+              if (prop.TRIM != null) {
+                trimColor = trim;
+                popup +=
+                  `<div class="row pt-3"><b>TRIM COLOR:</b><div class='box' style = 'background-color:#${trimHex}'></div><span> ${trim}</span></div>`;
+              }
+
+              if (prop.PICTURE) {
+                popup +=
+                  `<div class="row pt-3 text-center"><img src="img/homes/${address}.jpg" alt="HOUSE" height="200" width="300"></div>`;
+              }
             }
 
-            if (prop.PICTURE) {
-              popup +=
-                `<div class="row pt-3 text-center"><img src="img/homes/${address}.jpg" alt="HOUSE" height="200" width="300"></div>`;
-            }
 
 
             layer.bindPopup(popup);
