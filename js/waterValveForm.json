@@ -1,0 +1,110 @@
+{
+    "formName" : "waterValve",
+    "formNameDisplay" : "Water Valve",
+    "relatedFeature" : "Valves",
+    "form" : [
+        {
+            "name": "valveFacility",
+            "id": "valveFacility",
+            "type": "text",
+            "populate" : "auto",
+            "relatedObjField" : "facility"
+        
+        },
+        {
+            "name": "valveSystem",
+            "id": "valveSystem",
+            "type": "text",
+            "populate" : "auto",
+            "relatedObjField" : "system"
+        
+        },
+        {
+            "name": "warranty",
+            "id": "warranty",
+            "type": "date picker",
+            "populate" : "user"
+        
+        },
+        {
+            "name": "size",
+            "id": "size",
+            "type": "number",
+            "populate" : "user"
+        
+        },
+        {
+            "name": "exercised",
+            "id": "exercised",
+            "type": "select",
+            "options": [
+                {"option": "Yes"},
+                {"option": "No"}
+            ],
+            "populate" : "user"
+        
+        },
+        {
+            "name": "rotation",
+            "id": "rotation",
+            "type": "select",
+            "options": [
+                {"option": "Right-Open"},
+                {"option": "Left-Open"}
+            ],
+            "populate" : "user"
+        
+        },
+        {
+            "name": "condition",
+            "id": "condition",
+            "type": "select",
+            "options": [
+                {"option": "Clean"},
+                {"option": "Needs Cleaning"}
+            ],
+            "populate" : "user"
+        
+        },
+        {
+            "name": "repair",
+            "id": "repair",
+            "type": "select",
+            "options": [
+                {"option": "Yes"},
+                {"option": "No"}
+            ],
+            "populate" : "user"
+        
+        },
+        {
+            "name": "numberOfTurns",
+            "id": "numberOfTurns",
+            "type": "number",
+            "populate" : "user"
+        
+        },
+        {
+            "name": "comments",
+            "id": "comments",
+            "type": "text",
+            "populate" : "user"
+        
+        },
+        {
+            "name": "inspector",
+            "id": "inspector",
+            "type": "text",
+            "populate" : "user"
+        
+        },
+        {
+            "name": "inspectionDate",
+            "id": "inspectionDate",
+            "type": "date picker",
+            "populate" : "auto"
+        
+        }
+    ]
+}
+

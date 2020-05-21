@@ -1,0 +1,566 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  <title>Newlin Meadows</title>
+  <!-- AzTec icon -->
+  <!-- <link rel="icon" href="img/favicon.ico" type="image/x-icon"> -->
+  <!-- Font Awesome -->
+  <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.11.2/css/all.css">
+  <!-- Google Fonts Roboto -->
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700&display=swap">
+  <!-- Bootstrap core CSS -->
+  <link rel="stylesheet" href="css/bootstrap.min.css">
+  <!-- Material Design Bootstrap -->
+  <link rel="stylesheet" href="css/mdb.min.css">
+  <!-- Your custom styles (optional) -->
+  <link rel="stylesheet" href="css/style.css">
+  <!-- Leaflet Styles -->
+  <!-- Load Leaflet from CDN -->
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.6.0/dist/leaflet.css"
+    integrity="sha512-xwE/Az9zrjBIphAcBb3F6JVqxf46+CDLwfLMHloNu6KEQCAWi6HcDUbeOfBIptF7tcCzusKFjFw2yuvEpDL9wQ=="
+    crossorigin="" />
+  <link rel="stylesheet" href="https://unpkg.com/mapbox-gl/dist/mapbox-gl.css" />
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+  <link rel="stylesheet"
+    href="https://cdn.jsdelivr.net/npm/leaflet.locatecontrol@0.71.1/dist/L.Control.Locate.min.css" />
+
+
+</head>
+
+<body>
+  <!--Double navigation-->
+  <!--Main Navigation-->
+  <header class='header'>
+
+    <nav class="navbar fixed-top navbar-expand-lg navbar-dark indigo">
+      <a class="navbar-brand">
+        <img src="img/nm_cut.png" height="50" alt="Newlin Meadows"></a>
+      <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
+        aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse" id="navbarSupportedContent">
+        <ul class="navbar-nav mr-auto">
+          <!-- <li class="nav-item">
+            <a class="nav-link" id='layers' href="" data-toggle="dropdown" aria-haspopup='true'
+              area-expanded='false'>Layers
+              <i class="fas fa-layer-group"></i>
+            </a>
+          </li> -->
+          <li class="nav-item">
+            <a class="nav-link" id='basemaps' href="" data-toggle="dropdown" aria-haspopup='true'
+              area-expanded='false'>Basemaps
+              <i class="fas fa-map"></i>
+            </a>
+          </li>
+        </ul>
+
+        <!-- <form class="form-inline">
+          <div class="md-form my-0">
+            <input class="form-control mr-sm-2" type="text" placeholder="Search" aria-label="Search">
+          </div>
+          <button class="btn btn-outline-white btn-md my-2 my-sm-0 ml-3" type="submit">Search</button>
+        </form> -->
+      </div>
+    </nav>
+
+  </header>
+  <!--Main Navigation-->
+
+  <!--Main Layout-->
+  <main class=" py-5">
+    <div id="map" class='mt-4 mr-1 ml-1'></div>
+  </main>
+  <!--Main Layout-->
+
+  <!-- legend is outside of container-fluid and will be dynamically added to map -->
+  <div class="py-2 px-3 ml-3 mt-3 d-none" id="legend"></div>
+
+  <!-- Full Height Modal Right -->
+  <div class="modal fade right" id="attributeModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"
+    aria-hidden="true">
+
+    <!-- Add class .modal-full-height and then add class .modal-right (or other classes from list above) to set a position to the modal -->
+    <div class="modal-dialog modal-full-height modal-right" role="document">
+
+
+      <div class="modal-content">
+        <div class="modal-header text-center">
+          <button id='backBtn' class="btn btn-primary btn-sm arrayTrav"><i class="fas fa-angle-left mr-1"></i></button>
+          <h4 class="modal-title w-100" id="label"><b>Feature Attributes</b></h4>
+          <button id='forwardBtn' class="btn btn-primary btn-sm arrayTrav"><i
+              class="fas fa-angle-right mr-1"></i></button>
+
+        </div>
+        <div class="modal-body">
+          <div class='text-center'>
+            <h5 id='featureType'></h5>
+          </div>
+          <div class="modal-text"></div>
+
+        </div>
+        <div class="modal-footer justify-content-center">
+          <button type="button" class="btn btn-primary" data-dismiss="modal">Close</button>
+          <!-- <button type="button" class="btn btn-primary" id="save">Save changes</button> -->
+        </div>
+      </div>
+    </div>
+  </div>
+  <!-- Full Height Modal Right -->
+
+  <!-- Full Height Modal Right -->
+  <div class="modal fade left" id="layerModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"
+    aria-hidden="true">
+
+    <!-- Add class .modal-full-height and then add class .modal-right (or other classes from list above) to set a position to the modal -->
+    <div class="modal-dialog modal-full-height modal-left" role="document">
+
+
+      <div class="modal-content">
+        <div class="modal-header text-center">
+          <h4 class="modal-title w-100" id="label"><b>Layers</b></h4>
+
+        </div>
+        <div class="modal-body">
+          <div class="layerModal pl-4 py-5"></div>
+          <!-- <div id='legend'></div> -->
+
+        </div>
+
+        <div class="modal-footer justify-content-center">
+          <button type="button" class="btn btn-primary" data-dismiss="modal">Close</button>
+          <!-- <button type="button" class="btn btn-primary" id="save">Save changes</button> -->
+        </div>
+      </div>
+    </div>
+  </div>
+  <!-- Full Height Modal Right -->
+
+  <!-- Full Height Modal small -->
+  <div class="modal fade" id="basemapModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"
+    aria-hidden="true">
+
+    <!-- Add class .modal-full-height and then add class .modal-right (or other classes from list above) to set a position to the modal -->
+    <div class="modal-dialog modal-side modal-top-left modal-sm" role="document">
+
+
+      <div class="modal-content">
+        <div class="modal-header text-center">
+          <h4 class="modal-title w-100" id="label"><b>Basemap Options</b></h4>
+
+        </div>
+        <div class="modal-body">
+          <div class='row'>
+            <div class='col-10 py-1 px-3 basemapDiv'>
+              <a class=" basemap OpenStreetMap material-tooltip-smaller" href="#" data-toggle="tooltip"
+                data-placement="right" title="Open Source Vector Basemap"><img
+                  src='https://www.arcgis.com/sharing/rest/content/items/c29cfb7875fc4b97b58ba6987c460862/info/thumbnail/thumbnail1547740877120.jpeg?f=json'
+                  height='40px'> OpenStreetMap</a>
+            </div>
+          </div>
+          <div class='row'>
+            <div class='col-10 py-1 px-3 basemapDiv'>
+              <a class=" basemap Topographic material-tooltip-smaller" href="#" data-toggle="tooltip"
+                data-placement="right" title="ESRI Vector Topographic Map"><img
+                  src='https://www.arcgis.com/sharing/rest/content/items/588f0e0acc514c11bc7c898fed9fc651/info/thumbnail/topo_thumb_b2wm.jpg?f=json'
+                  height='40px'> Topographic</a>
+            </div>
+          </div>
+          <div class='row'>
+            <div class='col-10 py-1 px-3 basemapDiv'>
+              <a class=" basemap Streets material-tooltip-smaller" href="#" data-toggle="tooltip" data-placement="right"
+                title="ESRI Streets Vector Map"><img
+                  src='https://www.arcgis.com/sharing/rest/content/items/f81bc478e12c4f1691d0d7ab6361f5a6/info/thumbnail/street_thumb_b2wm.jpg?f=json'
+                  height='40px'> Streets</a>
+            </div>
+          </div>
+          <div class='row'>
+            <div class='col-10 py-1 px-3 basemapDiv'>
+              <a class=" basemap StreetsNight material-tooltip-smaller" href="#" data-toggle="tooltip"
+                data-placement="right" title="ESRI Streets Night Map"><img
+                  src='https://www.arcgis.com/sharing/rest/content/items/1c8ddaba2ee9498cb0025554351e5475/info/thumbnail/streetnight_thumb_b2.jpg?f=json'
+                  height='40px'> Streets Night</a>
+            </div>
+          </div>
+          <div class='row'>
+            <div class='col-10 py-1 px-3 basemapDiv'>
+              <a class=" basemap ImageryLabels material-tooltip-smaller" href="#" data-toggle="tooltip"
+                data-placement="right" title="ESRI Sattelite Raster Map"><img
+                  src='https://www.arcgis.com/sharing/rest/content/items/2ea9c9cf54cb494187b03a5057d1a830/info/thumbnail/Jhbrid_thumb_b2.jpg?f=json'
+                  height='40px'> Imagery Labels</a>
+            </div>
+          </div>
+
+          <div class="modal-footer justify-content-center">
+            <button type="button" class="btn btn-primary" data-dismiss="modal">Close</button>
+          </div>
+        </div>
+      </div>
+    </div>
+    <!-- Full Height Modal Right -->
+
+    <!-- End your project here-->
+
+    <!-- jQuery -->
+    <script type="text/javascript" src="js/jquery.min.js"></script>
+    <!-- Bootstrap tooltips -->
+    <script type="text/javascript" src="js/popper.min.js"></script>
+    <!-- Bootstrap core JavaScript -->
+    <script type="text/javascript" src="js/bootstrap.min.js"></script>
+    <!-- MDB core JavaScript -->
+    <script type="text/javascript" src="js/mdb.min.js"></script>
+    <!-- Your custom scripts (optional) -->
+    <script type="text/javascript"></script>
+    <!-- Leaflet CDN -->
+    <script src="https://unpkg.com/leaflet@1.6.0/dist/leaflet.js"
+      integrity="sha512-gZwIG9x3wUXg2hdXF6+rVkLF/0Vi9U8D2Ntg4Ga5I5BZpVkVxlJWbSQtXPSiUTtC0TjtGOmxa1AJPuV0CPthew=="
+      crossorigin=""></script>
+    <!-- Esri Leaflet CDN -->
+    <script src="https://unpkg.com/esri-leaflet@2.3.3/dist/esri-leaflet.js"
+      integrity="sha512-cMQ5e58BDuu1pr9BQ/eGRn6HaR6Olh0ofcHFWe5XesdCITVuSBiBZZbhCijBe5ya238f/zMMRYIMIIg1jxv4sQ=="
+      crossorigin=""></script>
+    <!-- Load turf.js from CDN -->
+    <script src='https://npmcdn.com/@turf/turf/turf.min.js'></script>
+
+    <script src="https://unpkg.com/mapbox-gl/dist/mapbox-gl.js"></script>
+
+    <script src="https://unpkg.com/esri-leaflet-vector/dist/esri-leaflet-vector-debug.js"></script>
+
+    <script src="https://unpkg.com/togeojson@0.14.2"></script>
+
+    <script src="https://cdn.jsdelivr.net/npm/leaflet.locatecontrol@0.71.1/dist/L.Control.Locate.min.js"
+      charset="utf-8"></script>
+
+    <script src="js/leaflet.filelayer.js"></script>
+
+    <script>
+      let map;
+      let marker;
+      let setLayer;
+      let username = sessionStorage.username || '';
+      let password = sessionStorage.password || '';
+      let token;
+      let layers = [];
+      let layer = '';
+      let label = '';
+      let legendData = [];
+      let control = '';
+      let kml = '';
+      //let layerIds = [];
+
+      /**
+       * Create leaflet map
+       *  
+       * @param {void}
+       * 
+       * @return {void}
+       **/
+      function createMap() {
+        map = L.map('map').setView([39.771068138277485, -104.98054504394533], 11);
+        map.options.maxZoom = 21;
+        layer = L.esri.basemapLayer('Streets').addTo(map);
+        let lc = L.control.locate({
+          position: 'topleft',
+          strings: {
+            title: "Show me where I am!"
+          },
+          locateOptions: {
+            enableHighAccuracy: true
+          }
+        }).addTo(map);
+        //layer = L.esri.Vector.basemap('Streets').addTo(map);
+        $(".Streets").addClass('active');
+
+        let style = {
+          color: 'red',
+          opacity: 1.0,
+          fillOpacity: .6,
+          weight: 10,
+          clickable: false
+        };
+
+        L.Control.FileLayerLoad.LABEL = '<img class="icon" src="img/svg/folder.svg" alt="file icon"/>';
+
+        control = L.Control.fileLayerLoad({
+          fitBounds: true,
+          layerOptions: {
+            style: style,
+            pointToLayer: function (data, latlng) {
+              return L.circleMarker(
+                latlng, {
+                  style: style
+                }
+              );
+            }
+          }
+        });
+
+        control.addTo(map);
+        control.loader.on('data:loaded', function (e) {
+          if (map.hasLayer(kml)) {
+            map.removeLayer(kml);
+          }
+          kml = e.layer
+
+        });
+      }
+
+      /**
+       * Set basemap for leaflet map
+       *  
+       * @param {string} basemap name
+       * 
+       * @return {void}
+       **/
+      function setBasemap(basemap) {
+        if (layer) {
+          map.removeLayer(layer);
+        }
+
+        if (label) {
+          map.removeLayer(label);
+        }
+        //console.log(basemap)
+
+        if (basemap == 'ImageryLabels') {
+          map.options.maxZoom = 19;
+          layer = L.esri.basemapLayer('Imagery');
+          map.addLayer(layer);
+          label = L.esri.basemapLayer('ImageryLabels');
+          map.addLayer(label);
+          $('.basemap').removeClass('active');
+          $("." + basemap).addClass('active');
+        } else {
+          map.options.maxZoom = 21;
+          //layer = L.esri.basemapLayer(basemap);
+          layer = L.esri.Vector.basemap(basemap);
+          $('.basemap').removeClass('active');
+          $("." + basemap).addClass('active');
+          map.addLayer(layer);
+        }
+
+      }
+
+      /**
+       * Get geoJson
+       *  
+       * @param {void}
+       * 
+       * @return {array} responsedata - array with login information returned from database
+       **/
+
+      async function getData() {
+        let responsedata = [];
+        try {
+          const response = await $.ajax({
+            cache: false,
+            type: 'GET',
+            url: 'data/PARCELS.json',
+            dataType: 'json'
+          }).done(function (data) {
+            responsedata = data;
+          })
+        } catch (error) {
+          console.log(error);
+        }
+        return responsedata;
+      }
+
+
+      /**
+       * Function to populate modal with feature attributes
+       *  
+       * @param {array} array - array of attributes
+       * @param {int} arrayId - array index number
+       * 
+       * @return {void}
+       **/
+
+      // function populateModal(array, arrayId) {
+      //   $("#form").remove();
+      //   if (map.hasLayer(marker)) {
+      //     map.removeLayer(marker);
+      //   }
+      //   $("#label").html(array.length + ' Features Selected')
+      //   $("#attributeModal").modal('show');
+      //   let prop = array[arrayId].properties;
+      //   content = '';
+      //   //content += `<div><button class = 'btn btn-primary'></button></div>`;
+      //   content += `<form id = 'form' class="p-2">`
+      //   for (i = 0; i < Object.keys(prop).length; i++) {
+      //     let propKeys = Object.keys(prop)
+      //     let propValues = Object.values(prop)
+
+      //     if (propKeys[i] == 'objectid') {
+      //       content +=
+      //         `<label for="${propKeys[i]}"><b>${propKeys[i].toUpperCase().replace(/_/g, ' ')}:</b></label><input type="text" id="${propKeys[i]}" class="form-control" value ="${propValues[i] || ''}" readonly>`
+      //     } else if (propKeys[i] == 'created_user' || propKeys[i] == 'created_date' || propKeys[i] ==
+      //       'last_edited_user' || propKeys[i] == 'last_edited_date') {
+
+      //     } else if (propKeys[i] == 'layer_name') {
+      //       $("#featureType").html(propValues[i]);
+      //     } else {
+      //       content +=
+      //         `<label for="${propKeys[i]}" style = 'padding-top: 10px;'><b>${propKeys[i].toUpperCase().replace(/_/g, ' ')}:</b></label><input type="text" id="${propKeys[i]}" class="form-control" value ="${propValues[i] || ''}">`
+      //     }
+      //   }
+
+
+      //   content += `</form>`
+      //   $(".modal-text").append(content);
+
+
+      //   let buffer = turf.buffer(array[arrayId], 20, {
+      //     units: 'feet'
+      //   });
+      //   marker = L.geoJson(buffer).addTo(map);
+
+      //   map.flyToBounds(marker.getBounds());
+      // }
+
+
+      /**
+       * Helper function to look for empty or null objects
+       *  
+       * @param {object} strIn - object or array of data
+       * 
+       * @return true/false
+       **/
+
+      function isEmpty(strIn) {
+        if (strIn === undefined) {
+          return true;
+        } else if (strIn == null) {
+          return true;
+        } else if (strIn == "") {
+          return true;
+        } else {
+          return false;
+        }
+      }
+
+
+      $(document).ready(async function () {
+        // SideNav Initialization
+        $(".button-collapse").sideNav();
+
+        //Initialize Map
+        createMap();
+
+        let data = await getData();
+
+        let parcels = L.geoJson(data, {
+          onEachFeature: function (feature, layer) {
+            let prop = feature.properties;
+            let address = prop.ADDRESS;
+            let mainHex = prop.MAIN_HEX;
+            let secondHex = prop.MAIN_2_HEX;
+            let trim = prop.TRIM;
+            let trimHex = prop.TRIM_HEX;
+            let mainColor = '';
+            let trimColor = '';
+            let popup = `<div class="row"><div><b>ADDRESS: </b>${address}</div></div>`;
+            if (prop.COMMENTS != null) {
+              popup +=
+                `<div class="row pt-3 comments text-center"><h4><b>${prop.COMMENTS}</b></h4></div>`;
+            }
+            if (prop.PAINT != null) {
+              mainColor = prop.PAINT;
+              popup +=
+                `<div class="row pt-3"><b>MAIN COLOR:</b><div class='box' style = 'background-color:#${mainHex}'></div><span> ${mainColor}</span></div>`;
+            }
+            if (prop.PAINT2 != null) {
+              let secondColor = prop.PAINT2;
+              popup +=
+                `<div class="row pt-3"><b>SECOND BODY COLOR:</b><div class='box' style = 'background-color:#${secondHex}'></div><span> ${secondColor}</span></div>`;
+            }
+            if (prop.TRIM != null) {
+              trimColor = trim;
+              popup +=
+                `<div class="row pt-3"><b>TRIM COLOR:</b><div class='box' style = 'background-color:#${trimHex}'></div><span> ${trim}</span></div>`;
+            }
+
+            if (prop.PICTURE) {
+              popup +=
+                `<div class="row pt-3 text-center"><img src="img/homes/${address}.jpg" alt="HOUSE" height="200" width="300"></div>`;
+            }
+
+
+            layer.bindPopup(popup);
+            layer.bindTooltip(address);
+          },
+          style: function (feature) {
+            let prop = feature.properties;
+            let mainHex = prop.MAIN_HEX;
+            let color = 'blue';
+            let fillOpacity = 0.3;
+            let lineColor = 'blue';
+            let trimHex = prop.TRIM_HEX;
+            let weight = .5;
+            if (mainHex != null) {
+              color = '#' + mainHex;
+              fillOpacity = 1;
+              lineColor = '#' + trimHex;
+              weight = 4;
+            }
+            return {
+              fillOpacity: fillOpacity,
+              fillColor: color,
+              fill: color,
+              color: lineColor,
+              weight: weight,
+              // opacity: .6,
+              //dashArray: "5, 5"
+            }
+          }
+
+        }).addTo(map);
+
+        map.fitBounds(parcels.getBounds());
+
+        $("#basemaps").on('click', function () {
+
+          $("#basemapModal").modal('show');
+        })
+
+        // $("#layers").on('click', function () {
+
+        //   $("#layerModal").modal('show');
+        // })
+
+        // on modal hide remove markers from map and empty modal body
+        $("#attributeModal").on('hide.bs.modal', function () {
+          $(".modal-text").empty()
+          if (map.hasLayer(marker)) {
+            map.removeLayer(marker);
+          }
+        });
+
+
+
+        $(".basemap").on('click', function () {
+          let basemap = $(this).text().replace(/\s+/g, "");
+          //basemap = basemap.replace(/\s+/g,"");
+          //console.log(basemap);
+          setBasemap(basemap);
+          $("#basemapModal").modal('hide');
+        })
+
+        //$('[data-toggle="tooltip"]').tooltip()
+
+        $('.material-tooltip-smaller').tooltip({
+          template: '<div class="tooltip md-tooltip"><div class="tooltip-arrow md-arrow"></div><div class="tooltip-inner md-inner"></div></div>'
+        });
+
+
+
+      }) //end document ready
+    </script>
+
+</body>
+
+</html>
