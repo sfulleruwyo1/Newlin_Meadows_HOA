@@ -157,9 +157,14 @@
           <div class='row'>
             <div class='col-10 py-1 px-3 basemapDiv'>
               <a class=" basemap ImageryLabels material-tooltip-smaller" href="#" data-toggle="tooltip"
-                data-placement="right" title="ESRI Sattelite Raster Map"><img
+                data-placement="right" title="ESRI Satelite Raster Map"><img
                   src='https://www.arcgis.com/sharing/rest/content/items/2ea9c9cf54cb494187b03a5057d1a830/info/thumbnail/Jhbrid_thumb_b2.jpg?f=json'
                   height='40px'> Imagery Labels</a>
+            </div>
+            <div class='col-10 py-1 px-3 basemapDiv'>
+              <a class=" basemap Streets" href="#"><img
+                  src='https://www.arcgis.com/sharing/rest/content/items/f81bc478e12c4f1691d0d7ab6361f5a6/info/thumbnail/street_thumb_b2wm.jpg?f=json'
+                  height='40px'> Streets</a>
             </div>
           </div>
 
@@ -305,7 +310,8 @@
         } else {
           map.options.maxZoom = 21;
           //layer = L.esri.basemapLayer(basemap);
-          layer = L.esri.Vector.basemap(basemap);
+          //layer = L.esri.Vector.basemap(basemap);
+          layer = L.esri.basemapLayer('Streets')
           $('.basemap').removeClass('active');
           $("." + basemap).addClass('active');
           map.addLayer(layer);
