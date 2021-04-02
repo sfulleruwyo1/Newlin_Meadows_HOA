@@ -3605,11 +3605,12 @@
 			},
 			"properties": {
 				"ADDRESS": "11743 S ROCK WILLOW WAY",
-				"PAINT": null,
-				"TRIM": null,
-				"PNT_YEAR": null,
-				"MAIN_HEX": null,
-				"TRIM_HEX": null
+				"PAINT": "City Scape",
+				"TRIM": "Pure White",
+				"PNT_YEAR": "2021",
+				"MAIN_HEX": "7f817e",
+				"TRIM_HEX": "edece6",
+				"PICTURE": "YES"
 			}
 		},
 		{
