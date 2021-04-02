@@ -4549,11 +4549,12 @@
 			},
 			"properties": {
 				"ADDRESS": "11799 S ROCK WILLOW WAY",
-				"PAINT": null,
-				"TRIM": null,
-				"PNT_YEAR": null,
-				"MAIN_HEX": null,
-				"TRIM_HEX": null
+				"PAINT": "Rushing River",
+				"TRIM": "Zurich White",
+				"PNT_YEAR": "2015",
+				"MAIN_HEX": "a19c8f",
+				"TRIM_HEX": "e6e1d9",
+				"PICTURE": "YES"
 			}
 		},
 		{
