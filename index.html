@@ -333,7 +333,7 @@
           const response = await $.ajax({
             cache: false,
             type: 'GET',
-            url: 'data/PARCELS.json',
+            url: 'data/PARCELS2.json',
             dataType: 'json'
           }).done(function (data) {
             responsedata = data;
@@ -377,40 +377,37 @@
 
         let parcels = L.geoJson(data, {
           onEachFeature: function (feature, layer) {
+            //console.log(feature.properties)
             let prop = feature.properties;
             let address = prop.ADDRESS;
-            let mainHex = prop.MAIN_HEX;
-            let secondHex = prop.MAIN_2_HEX;
-            let trim = prop.TRIM;
-            let trimHex = prop.TRIM_HEX;
+            let mainHex = prop.body_hex;
+            let secondHex = prop.body_hex_2;
+            let trim = prop.trim_color;
+            let trimHex = prop.trim_hex;
             let mainColor = '';
             let trimColor = '';
             let popup = `<div class="row"><div><b>ADDRESS: </b>${address}</div></div>`;
-            if (prop.COMMENTS != null) {
 
-            } else {
-              if (prop.PAINT != null) {
-                mainColor = prop.PAINT;
-                popup +=
-                  `<div class="row pt-3"><b>MAIN COLOR:</b><div class='box' style = 'background-color:#${mainHex}'></div><span> ${mainColor}</span></div>`;
-              }
-              if (prop.PAINT2 != null) {
-                let secondColor = prop.PAINT2;
-                popup +=
-                  `<div class="row pt-3"><b>SECOND BODY COLOR:</b><div class='box' style = 'background-color:#${secondHex}'></div><span> ${secondColor}</span></div>`;
-              }
-              if (prop.TRIM != null) {
-                trimColor = trim;
-                popup +=
-                  `<div class="row pt-3"><b>TRIM COLOR:</b><div class='box' style = 'background-color:#${trimHex}'></div><span> ${trim}</span></div>`;
-              }
-
-              if (prop.PICTURE) {
-                popup +=
-                  `<div class="row pt-3 text-center"><img src="img/homes/${address}.jpg" alt="HOUSE" height="200" width="300"></div>`;
-              }
+            if (prop.body_color != '') {
+              mainColor = prop.body_color;
+              popup +=
+                `<div class="row pt-3"><b>MAIN COLOR:</b><div class='box' style = 'background-color:#${mainHex}'></div><span> ${mainColor}</span></div>`;
+            }
+            if (prop.body_color_2 != '') {
+              let secondColor = prop.body_color_2;
+              popup +=
+                `<div class="row pt-3"><b>SECOND BODY COLOR:</b><div class='box' style = 'background-color:#${secondHex}'></div><span> ${secondColor}</span></div>`;
+            }
+            if (prop.trim_color != '') {
+              trimColor = trim;
+              popup +=
+                `<div class="row pt-3"><b>TRIM COLOR:</b><div class='box' style = 'background-color:#${trimHex}'></div><span> ${trim}</span></div>`;
             }
 
+            if (prop.picture == 'YES') {
+              popup +=
+                `<div class="row pt-3 text-center"><img src="img/homes/${address}.jpg" alt="HOUSE" height="200" width="300"></div>`;
+            }
 
 
             layer.bindPopup(popup);
@@ -418,13 +415,13 @@
           },
           style: function (feature) {
             let prop = feature.properties;
-            let mainHex = prop.MAIN_HEX;
-            let color = 'blue';
-            let fillOpacity = 0.3;
-            let lineColor = 'blue';
-            let trimHex = prop.TRIM_HEX;
+            let mainHex = prop.body_hex;
+            let color;
+            let fillOpacity = 0.1;
+            let lineColor;
+            let trimHex = prop.trim_hex;
             let weight = .5;
-            if (mainHex != null) {
+            if (mainHex != '') {
               color = '#' + mainHex;
               fillOpacity = 1;
               lineColor = '#' + trimHex;
